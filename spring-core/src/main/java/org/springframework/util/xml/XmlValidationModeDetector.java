@@ -16,14 +16,14 @@
 
 package org.springframework.util.xml;
 
+import org.springframework.lang.Nullable;
+import org.springframework.util.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.CharConversionException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import org.springframework.lang.Nullable;
-import org.springframework.util.StringUtils;
 
 /**
  * Detects whether an XML stream is using DTD- or XSD-based validation.
@@ -96,13 +96,16 @@ public class XmlValidationModeDetector {
 			String content;
 			while ((content = reader.readLine()) != null) {
 				content = consumeCommentTokens(content);
+				//跳过注释和空行
 				if (this.inComment || !StringUtils.hasText(content)) {
 					continue;
 				}
+				//判断是否包含"DOCTYPE",如果包含.则是DTD
 				if (hasDoctype(content)) {
 					isDtdValidated = true;
 					break;
 				}
+				//标记一定在xml正文之前.如果读取到了xml正文.则直接返回
 				if (hasOpeningTag(content)) {
 					// End of meaningful data...
 					break;
