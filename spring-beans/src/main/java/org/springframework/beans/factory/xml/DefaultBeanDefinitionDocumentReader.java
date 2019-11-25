@@ -91,6 +91,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	 */
 	@Override
 	public void registerBeanDefinitions(Document doc, XmlReaderContext readerContext) {
+		//XmlBeanDefinitionReader.createReaderContext()
 		this.readerContext = readerContext;
 		doRegisterBeanDefinitions(doc.getDocumentElement());
 	}
@@ -148,7 +149,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		//解析前处理.默认空实现.子类可覆盖.
 		preProcessXml(root);
 
-		//对bean的处理
+		//解析beanDefinition
 		parseBeanDefinitions(root, this.delegate);
 
 		//解析后处理.默认空实现.子类可覆盖.
@@ -328,7 +329,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 			bdHolder = delegate.decorateBeanDefinitionIfRequired(ele, bdHolder);
 
 			try {
-				// 注册bean -- Register the final decorated instance.
+				// 注册beanDefinition(放入map中)
 				BeanDefinitionReaderUtils.registerBeanDefinition(bdHolder, getReaderContext().getRegistry());
 			}
 			catch (BeanDefinitionStoreException ex) {

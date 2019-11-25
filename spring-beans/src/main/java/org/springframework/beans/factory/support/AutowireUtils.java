@@ -16,6 +16,13 @@
 
 package org.springframework.beans.factory.support;
 
+import org.springframework.beans.BeanMetadataElement;
+import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.config.TypedStringValue;
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
@@ -32,13 +39,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Set;
 
-import org.springframework.beans.BeanMetadataElement;
-import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.config.TypedStringValue;
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
-
 /**
  * Utility class that contains various methods useful for the implementation of
  * autowire-capable bean factories.
@@ -52,7 +52,9 @@ import org.springframework.util.ClassUtils;
 abstract class AutowireUtils {
 
 	private static final Comparator<Executable> EXECUTABLE_COMPARATOR = (e1, e2) -> {
+		//按构造函数是否是public降序排序
 		int result = Boolean.compare(Modifier.isPublic(e2.getModifiers()), Modifier.isPublic(e1.getModifiers()));
+		//按参数个数降序排序
 		return result != 0 ? result : Integer.compare(e2.getParameterCount(), e1.getParameterCount());
 	};
 

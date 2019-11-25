@@ -150,23 +150,33 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	@Nullable
 	private volatile Object beanClass;
 
+
+	//bean作用范围,singleton / prototype
 	@Nullable
 	private String scope = SCOPE_DEFAULT;
 
+	//是否是抽象方法
 	private boolean abstractFlag = false;
 
+
+	//是否懒加载
 	@Nullable
 	private Boolean lazyInit;
 
+	//自动注入模式,byName,byType等
 	private int autowireMode = AUTOWIRE_NO;
 
+	//依赖检查
 	private int dependencyCheck = DEPENDENCY_CHECK_NONE;
 
+	//用来表示一个bean的实例化依赖另一个bean
 	@Nullable
 	private String[] dependsOn;
 
+	//设置为false时,容器在查找自动装配对象时,不会选用该对象:即它不会被用作其他bean自动装配的候选者,但是该bean还是可以使用自动装配来注入其他bean的
 	private boolean autowireCandidate = true;
 
+	//自动装配出现多个候选者时,优先使用primary=true的bean
 	private boolean primary = false;
 
 	//qualifier
@@ -175,13 +185,16 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	@Nullable
 	private Supplier<?> instanceSupplier;
 
+	//允许访问非公开方法,程序设置
 	private boolean nonPublicAccessAllowed = true;
 
 	private boolean lenientConstructorResolution = true;
 
+	//工厂模式的类名
 	@Nullable
 	private String factoryBeanName;
 
+	//工厂模式初始化的方法名
 	@Nullable
 	private String factoryMethodName;
 
@@ -189,15 +202,18 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	@Nullable
 	private ConstructorArgumentValues constructorArgumentValues;
 
+	//普通属性
 	@Nullable
 	private MutablePropertyValues propertyValues;
 
 	//方法重写的持有者 ，记录 Lookup-method、 replaced-method 元素
 	private MethodOverrides methodOverrides = new MethodOverrides();
 
+	//初始化方法
 	@Nullable
 	private String initMethodName;
 
+	//销毁方法
 	@Nullable
 	private String destroyMethodName;
 
@@ -1138,12 +1154,14 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 * @throws BeanDefinitionValidationException in case of validation failure
 	 */
 	public void validate() throws BeanDefinitionValidationException {
+		//工厂方法和lookup-method/replaced-method不能共存
 		if (hasMethodOverrides() && getFactoryMethodName() != null) {
 			throw new BeanDefinitionValidationException(
 					"Cannot combine factory method with container-generated method overrides: " +
 							"the factory method must create the concrete bean instance.");
 		}
 		if (hasBeanClass()) {
+			//验证并准备override-method:主要是设置overloaded属性为false
 			prepareMethodOverrides();
 		}
 	}
@@ -1168,6 +1186,8 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 *
 	 * @param mo the MethodOverride object to validate
 	 * @throws BeanDefinitionValidationException in case of validation failure
+	 *
+	 * 查询对应类中是否有对应的方法,有就将overload设置为false,没有就抛异常
 	 */
 	protected void prepareMethodOverride(MethodOverride mo) throws BeanDefinitionValidationException {
 		int count = ClassUtils.getMethodCountForName(getBeanClass(), mo.getMethodName());

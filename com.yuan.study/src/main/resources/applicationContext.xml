@@ -1,31 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
+	<context:component-scan base-package="com.yuan"/>
 
-	<bean id="testService" class="com.yuan.TestService" init-method="initsss">
+	<bean id="testService" class="com.yuan.service.TestService" init-method="initsss">
 		<meta key="sss" value="fff"/>
-<!--		<property name="name" value="ddd"></property>-->
-<!--		<constructor-arg value="a" name="name"></constructor-arg>-->
-		<constructor-arg index="0" value="33" >
+		<!--		<property name="name" value="ddd"></property>-->
+		<!--		<constructor-arg value="a" name="name"></constructor-arg>-->
+		<constructor-arg index="0" value="33">
 		</constructor-arg>
 		<constructor-arg index="1" value="fff"></constructor-arg>
 
 		<!--lookup-method作用: 当单例A依赖了一个非单例B时,可以通过这个标签来让spring每次都返回最新的bean
 			详情: https://www.cnblogs.com/ViviChan/p/4981619.html
+			https://blog.csdn.net/wu8439512/article/details/90048422
 		-->
-<!--		<lookup-method ></lookup-method>-->
+		<!--		<lookup-method ></lookup-method>-->
 		<!-- replaced-method作用:可以动态替换bean中方法的实现
 			详情:https://blog.csdn.net/lightofmiracle/article/details/74988243
 		-->
-<!--		<replaced-method></replaced-method>-->
+		<!--		<replaced-method></replaced-method>-->
 	</bean>
 
-	<bean id="userFactory" class="com.yuan.UserFactory" factory-method="getInstance" init-method="init" destroy-method="destroy"/>
-	<bean id="userService" factory-bean="userFactory"  >
+	<bean id="userService" class="com.yuan.factory.UserFactory" factory-method="getInstance" init-method="init"
+		  destroy-method="destroy"></bean>
+
+
+	<!--	<bean id="d" class="com.yuan.service.DemoBService" scope="prototype"/>-->
+
+	<!--	<bean class="com.yuan.service.DemoAService" id="demoAService" scope="prototype">-->
+	<!--		<property name="demoBService" ref="d"></property>-->
+	<!--	</bean>-->
+
+
+	<!--实现FactoryBean接口的工厂类-->
+	<bean id="book" class="com.yuan.factory.BookFactoryBean" autowire="constructor">
+		<property name="infoMap">
+			<map>
+				<entry key="name" value="effective java"/>
+				<entry key="author" value="Joshua Bloch"/>
+				<entry key="price" value="345"/>
+			</map>
+		</property>
 	</bean>
 
-
+	<!--
+		depends-on用法demo:https://blog.csdn.net/aitangyong/article/details/53036913
+	-->
 
 </beans>

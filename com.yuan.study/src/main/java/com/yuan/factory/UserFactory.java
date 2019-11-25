@@ -1,4 +1,6 @@
-package com.yuan;
+package com.yuan.factory;
+
+import com.yuan.service.UserService;
 
 /**
  * @author yuan
@@ -10,4 +12,6 @@ public class UserFactory {
 	public static UserService getInstance() {
 		return userService;
 	}
+
+
 }

@@ -1,4 +1,4 @@
-package com.yuan;
+package com.yuan.service;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

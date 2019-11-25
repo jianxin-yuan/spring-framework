@@ -1,8 +1,7 @@
 package com.yuan;
 
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.core.io.ClassPathResource;
+import com.yuan.circle.TestA;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.IOException;
 
@@ -12,23 +11,36 @@ import java.io.IOException;
  */
 public class Main {
 	public static void main(String[] args) throws IOException {
-		//ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+		//ApplicationContext factory = new AnnotationConfigApplicationContext(Config.class);
 		//context.getBean(TestService.class).test();
 
-		XmlBeanFactory factory = new XmlBeanFactory(new ClassPathResource("applicationContext.xml"));
-		TestService bean = factory.getBean(TestService.class);
-		bean.test();
-		System.out.println(bean.getName());
-		System.out.println(bean.getPwd());
+		//XmlBeanFactory factory = new XmlBeanFactory(new ClassPathResource("applicationContext.xml"));
+		ClassPathXmlApplicationContext factory = new ClassPathXmlApplicationContext("applicationContext.xml");
+
+		//TestService bean = factory.getBean(TestService.class);
+		//factory.getBean("xxx");
+		//bean.test();
+		//System.out.println(bean.getName());
+		//System.out.println(bean.getPwd());
 
 		//获取配置的meta标签
-		BeanDefinition testServiceDefinition = factory.getBeanDefinition("testService");
-		System.out.println("meta sss :"+testServiceDefinition.getAttribute("sss"));
+		//BeanDefinition testServiceDefinition = factory.getBeanDefinition("testService");
+		//System.out.println("meta sss :"+testServiceDefinition.getAttribute("sss"));
 
 		//工厂方法创建的bean
-		UserService userService = factory.getBean(UserService.class);
-		userService.xx();
+		//UserService userService = factory.getBean(UserService.class);
+		//userService.xx();
 
+
+		//通过FactoryBean获取bean
+		//Object book = factory.getBean("book");
+		//System.out.println(book);
+		////获取工厂类本身需要加"&"
+		//System.out.println(factory.getBean("&book"));
+
+
+		//factory.getBean(DemoAService.class).sss();
+		//factory.getBean(DemoBService.class).aaa();
 
 		//如果没有传入传入class和classLoader,则从classPath根路径下加载资源文件
 		//ClassPathResource resource = new ClassPathResource("test.xml");
@@ -38,5 +50,9 @@ public class Main {
 
 		//String[] strings = StringUtils.tokenizeToStringArray("name{f{fwq", ",;{");
 		//System.out.println(Arrays.toString(strings));
+
+
+		TestA bean = (TestA) factory.getBean("ff");
+		System.out.println(bean);
 	}
 }
