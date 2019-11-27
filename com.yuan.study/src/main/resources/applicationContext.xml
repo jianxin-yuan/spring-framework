@@ -37,7 +37,7 @@
 
 
 	<!--实现FactoryBean接口的工厂类-->
-	<bean id="book" class="com.yuan.factory.BookFactoryBean" autowire="constructor">
+	<bean id="book" class="com.yuan.factory.BookFactoryBean" autowire="constructor" autowire-candidate="">
 		<property name="infoMap">
 			<map>
 				<entry key="name" value="effective java"/>

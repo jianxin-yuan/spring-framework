@@ -1,6 +1,7 @@
 package com.yuan.circle;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 /**
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
  * @date 2019/11/22 4:52 下午
  */
 @Component
+@DependsOn
 public class TestA {
 	@Autowired
 	private TestB testB;

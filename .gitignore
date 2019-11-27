@@ -25,7 +25,7 @@ buildSrc/build
 /framework-bom/build
 /integration-tests/build
 /src/asciidoc/build
-target/
+#target/
 
 # Eclipse artifacts, including WTP generated manifests
 .classpath
@@ -162,3 +162,4 @@ fabric.properties
 hs_err_pid*
 
 /com.yuan.study/build/
+

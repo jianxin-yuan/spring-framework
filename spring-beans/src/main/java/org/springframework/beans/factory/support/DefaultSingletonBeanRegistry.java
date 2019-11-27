@@ -137,10 +137,28 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * Map between dependent bean names: bean name to Set of dependent bean names.
 	 */
 	// beanName 到 依赖的bean集合 的映射
+	/**
+	 * 如 a 依赖 b,c
+	 *    d 依赖 c , f
+	 *   dependentBeanMap = {
+	 *       a:{b,c},
+	 *       d:{c,f}
+	 *   }
+	 */
 	private final Map<String, Set<String>> dependentBeanMap = new ConcurrentHashMap<>(64);
 
 	/**
 	 * Map between depending bean names: bean name to Set of bean names for the bean's dependencies.
+	 */
+	// 被依赖的bean 到依赖它的bean集合的映射
+	/**
+	 * 如 a 依赖 b,c
+	 * 	 d 依赖 c , f
+	 * 	 dependenciesForBeanMap = {
+	 * 	     b:{a}
+	 * 	     c:{a,d}
+	 * 	     f:{d}
+	 * 	 }
 	 */
 	private final Map<String, Set<String>> dependenciesForBeanMap = new ConcurrentHashMap<>(64);
 

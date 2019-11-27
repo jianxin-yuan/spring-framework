@@ -173,7 +173,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	@Nullable
 	private String[] dependsOn;
 
-	//设置为false时,容器在查找自动装配对象时,不会选用该对象:即它不会被用作其他bean自动装配的候选者,但是该bean还是可以使用自动装配来注入其他bean的
+	//autowire-candidate 设置为false时,容器在查找自动装配对象时,不会选用该对象:即它不会被用作其他bean自动装配的候选者,但是该bean还是可以使用自动装配来注入其他bean的
 	private boolean autowireCandidate = true;
 
 	//自动装配出现多个候选者时,优先使用primary=true的bean
