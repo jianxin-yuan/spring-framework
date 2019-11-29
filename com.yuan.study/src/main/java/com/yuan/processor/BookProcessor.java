@@ -12,11 +12,12 @@ import java.time.LocalDateTime;
  * @date 2019/11/22 2:08 下午
  *
  *  BeanPostProcessor处理器
+ *  实现了BeanPostProcessor的类.可以在bean初始化前后(init方法执行前后)对bean进行处理
  */
 @Component
 public class BookProcessor implements BeanPostProcessor {
 
-	//后置处理器
+	//bean实例化之后调用
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		if (bean instanceof Book) {
@@ -27,7 +28,7 @@ public class BookProcessor implements BeanPostProcessor {
 		return bean;
 	}
 
-	//前置处理器
+	//bean实例化之前调用
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 		return null;

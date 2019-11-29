@@ -9,7 +9,7 @@ import java.util.Map;
  * @author yuan
  * @date 2019/11/21 10:40 上午
  *
- * FactoryBean实现类
+ * FactoryBean实现类:工厂类,spring会调用getObject()获取bean
  */
 public class BookFactoryBean implements FactoryBean<Book> {
 	private Map<String, Object> infoMap;

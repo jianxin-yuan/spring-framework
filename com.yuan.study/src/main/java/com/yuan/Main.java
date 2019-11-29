@@ -1,6 +1,6 @@
 package com.yuan;
 
-import com.yuan.circle.TestA;
+import com.yuan.custom.MyClassPathXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.IOException;
@@ -15,8 +15,8 @@ public class Main {
 		//context.getBean(TestService.class).test();
 
 		//XmlBeanFactory factory = new XmlBeanFactory(new ClassPathResource("applicationContext.xml"));
-		ClassPathXmlApplicationContext factory = new ClassPathXmlApplicationContext("applicationContext.xml");
-
+		//ClassPathXmlApplicationContext factory = new ClassPathXmlApplicationContext("applicationContext.xml");
+		ClassPathXmlApplicationContext factory = new MyClassPathXmlApplicationContext("applicationContext.xml");
 		//TestService bean = factory.getBean(TestService.class);
 		//factory.getBean("xxx");
 		//bean.test();
@@ -52,7 +52,14 @@ public class Main {
 		//System.out.println(Arrays.toString(strings));
 
 
-		TestA bean = (TestA) factory.getBean("ff");
-		System.out.println(bean);
+		//factory.getBean(DemoServiceAware.class).printDemoMsg();
+
+		// 测试过滤数据
+		//SensitiveDataFilterBeanFactoryPostProcessor beanFactoryPostProcessor = factory.getBean(SensitiveDataFilterBeanFactoryPostProcessor.class);
+		//factory.addBeanFactoryPostProcessor(beanFactoryPostProcessor);
+		System.out.println(factory.getBean("user"));
+
+		//factory.getBean(InitializeDemo.class).print();
+		//factory.close();
 	}
 }

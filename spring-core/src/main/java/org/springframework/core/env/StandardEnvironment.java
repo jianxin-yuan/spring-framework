@@ -70,8 +70,10 @@ public class StandardEnvironment extends AbstractEnvironment {
 	 * <p>Properties present in {@value #SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME} will
 	 * take precedence over those in {@value #SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME}.
 	 * @see AbstractEnvironment#customizePropertySources(MutablePropertySources)
-	 * @see #getSystemProperties()
-	 * @see #getSystemEnvironment()
+	 * @see #getSystemProperties()  java进程变量
+	 * @see #getSystemEnvironment() 系统环境变量
+	 *
+	 *  加载java进程变量和系统环境变量
 	 */
 	@Override
 	protected void customizePropertySources(MutablePropertySources propertySources) {
