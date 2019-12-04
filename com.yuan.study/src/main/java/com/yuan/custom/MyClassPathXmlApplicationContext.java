@@ -1,5 +1,6 @@
 package com.yuan.custom;
 
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -10,8 +11,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class MyClassPathXmlApplicationContext extends ClassPathXmlApplicationContext {
 
-	public MyClassPathXmlApplicationContext(String... configLocation)  {
+	public
+	MyClassPathXmlApplicationContext(String... configLocation)  {
 		super(configLocation);
+	}
+
+	@Override
+	protected void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
+		super.postProcessBeanFactory(beanFactory);
 	}
 
 	// 重写此方法,可以设置启动时检查的必须参数,

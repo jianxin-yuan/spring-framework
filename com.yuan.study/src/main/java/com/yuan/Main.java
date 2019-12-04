@@ -17,6 +17,7 @@ public class Main {
 		//XmlBeanFactory factory = new XmlBeanFactory(new ClassPathResource("applicationContext.xml"));
 		//ClassPathXmlApplicationContext factory = new ClassPathXmlApplicationContext("applicationContext.xml");
 		ClassPathXmlApplicationContext factory = new MyClassPathXmlApplicationContext("applicationContext.xml");
+
 		//TestService bean = factory.getBean(TestService.class);
 		//factory.getBean("xxx");
 		//bean.test();
@@ -32,12 +33,23 @@ public class Main {
 		//userService.xx();
 
 
+		// 国际化demo
+		//Object[] params = new Object[0];
+		//String msg1 = factory.getMessage("test", params, Locale.US);
+		//String msg2 = factory.getMessage("test", params, Locale.CHINA);
+		//System.out.println(msg1);
+		//System.out.println(msg2);
+
+
 		//通过FactoryBean获取bean
-		//Object book = factory.getBean("book");
-		//System.out.println(book);
+		Object book = factory.getBean("book");
+		System.out.println(book);
 		////获取工厂类本身需要加"&"
 		//System.out.println(factory.getBean("&book"));
 
+
+		//TestEvent testEvent = new TestEvent("TestEvent","test event");
+		//factory.publishEvent(testEvent);
 
 		//factory.getBean(DemoAService.class).sss();
 		//factory.getBean(DemoBService.class).aaa();
@@ -57,7 +69,7 @@ public class Main {
 		// 测试过滤数据
 		//SensitiveDataFilterBeanFactoryPostProcessor beanFactoryPostProcessor = factory.getBean(SensitiveDataFilterBeanFactoryPostProcessor.class);
 		//factory.addBeanFactoryPostProcessor(beanFactoryPostProcessor);
-		System.out.println(factory.getBean("user"));
+		//System.out.println(factory.getBean("user"));
 
 		//factory.getBean(InitializeDemo.class).print();
 		//factory.close();

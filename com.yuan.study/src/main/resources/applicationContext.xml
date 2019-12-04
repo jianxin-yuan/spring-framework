@@ -36,7 +36,7 @@
 
 
 	<!--实现FactoryBean接口的工厂类-->
-	<bean id="book" class="com.yuan.factory.BookFactoryBean" autowire="constructor">
+	<bean id="book" class="com.yuan.factory.BookFactoryBean" >
 		<property name="infoMap">
 			<map>
 				<entry key="name" value="effective java"/>
@@ -50,16 +50,15 @@
 		depends-on用法demo:https://blog.csdn.net/aitangyong/article/details/53036913
 	-->
 
-
 	<!--测试过滤数据 start-->
-<!--	<bean id="testBeanFactoryPostProcessor" class="com.yuan.processor.SensitiveDataFilterBeanFactoryPostProcessor">-->
-<!--		<property name="sensitives">-->
-<!--			<set>-->
-<!--				<value>123456</value>-->
-<!--				<value>11@qq.com</value>-->
-<!--			</set>-->
-<!--		</property>-->
-<!--	</bean>-->
+	<!--	<bean id="testBeanFactoryPostProcessor" class="com.yuan.processor.SensitiveDataFilterBeanFactoryPostProcessor">-->
+	<!--		<property name="sensitives">-->
+	<!--			<set>-->
+	<!--				<value>123456</value>-->
+	<!--				<value>11@qq.com</value>-->
+	<!--			</set>-->
+	<!--		</property>-->
+	<!--	</bean>-->
 	<bean id="user" class="com.yuan.entity.User">
 		<property name="address" value="China"/>
 		<property name="userName" value="yuan"/>
@@ -67,5 +66,19 @@
 		<property name="email" value="11@qq.com"/>
 	</bean>
 	<!--测试过滤数据 end-->
+
+
+	<!--国际化,id必须为messageResource,否则会NoSuchMessageException-->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>message</value>
+			</list>
+		</property>
+	</bean>
+
+	<!--listener-->
+	<bean id="testListener" class="com.yuan.event.TestListener"/>
+
 
 </beans>

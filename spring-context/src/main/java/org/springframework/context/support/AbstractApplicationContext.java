@@ -132,6 +132,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * If none is supplied, message resolution is delegated to the parent.
 	 *
 	 * @see MessageSource
+	 *
+	 * 由于这里写死了messageResource处理类的名字,所有配置文件中的class的ID必须和这里一致
 	 */
 	public static final String MESSAGE_SOURCE_BEAN_NAME = "messageSource";
 
@@ -596,7 +598,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
-				// 初始化剩下的单实例(非惰性的)
+				// 初始化剩下的单例(非惰性的)
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
@@ -712,7 +714,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
 		// Configure the bean factory with context callbacks.
-		// beanPostProcessor
+		// 注册ApplicationContextAwareProcessor
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 
 		// 设置忽略自动装配的类
@@ -794,9 +796,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * Initialize the MessageSource.
 	 * Use parent's if none defined in this context.
+	 *
+	 * 设置国际化处理类:如果用户设置了自定义的messageSource,使用用户的,如果没有设置,使用默认的实现DelegatingMessageSource
 	 */
 	protected void initMessageSource() {
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+		// 已'messageSource'这个beanName在容器中获取bean
 		if (beanFactory.containsLocalBean(MESSAGE_SOURCE_BEAN_NAME)) {
 			this.messageSource = beanFactory.getBean(MESSAGE_SOURCE_BEAN_NAME, MessageSource.class);
 			// Make MessageSource aware of parent MessageSource.
@@ -813,6 +818,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			}
 		} else {
 			// Use empty MessageSource to be able to accept getMessage calls.
+			// 容器中没有定义,使用空实现类DelegatingMessageSource
 			DelegatingMessageSource dms = new DelegatingMessageSource();
 			dms.setParentMessageSource(getInternalParentMessageSource());
 			this.messageSource = dms;
@@ -828,6 +834,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * Uses SimpleApplicationEventMulticaster if none defined in the context.
 	 *
 	 * @see org.springframework.context.event.SimpleApplicationEventMulticaster
+	 *
+	 * 首先查看是否有用户自定义的ApplicationEventMulticaster,有就是用,
+	 * 没有就使用默认的SimpleApplicationEventMulticaster
 	 */
 	protected void initApplicationEventMulticaster() {
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
@@ -891,12 +900,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void registerListeners() {
 		// Register statically specified listeners first.
+		// 代码里通过context.addApplicationListener()加入的listener
 		for (ApplicationListener<?> listener : getApplicationListeners()) {
 			getApplicationEventMulticaster().addApplicationListener(listener);
 		}
 
 		// Do not initialize FactoryBeans here: We need to leave all regular beans
 		// uninitialized to let post-processors apply to them!
+		// 配置文件中配置的listener
 		String[] listenerBeanNames = getBeanNamesForType(ApplicationListener.class, true, false);
 		for (String listenerBeanName : listenerBeanNames) {
 			getApplicationEventMulticaster().addApplicationListenerBean(listenerBeanName);
@@ -918,6 +929,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory) {
 		// Initialize conversion service for this context.
+		// 注册类型转换器
 		if (beanFactory.containsBean(CONVERSION_SERVICE_BEAN_NAME) &&
 				beanFactory.isTypeMatch(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class)) {
 			beanFactory.setConversionService(
@@ -941,9 +953,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.setTempClassLoader(null);
 
 		// Allow for caching all bean definition metadata, not expecting further changes.
+		// 冻结beanDefinition配置
 		beanFactory.freezeConfiguration();
 
 		// Instantiate all remaining (non-lazy-init) singletons.
+		// 初始化剩下的单例(非惰性的)
 		beanFactory.preInstantiateSingletons();
 	}
 
@@ -951,6 +965,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * Finish the refresh of this context, invoking the LifecycleProcessor's
 	 * onRefresh() method and publishing the
 	 * {@link org.springframework.context.event.ContextRefreshedEvent}.
+	 *
+	 * 当applicationContext启动或停止时,所有实现了Lifecycle的类的start/stop方法都会得到执行
+	 *
 	 */
 	protected void finishRefresh() {
 		// Clear context-level resource caches (such as ASM metadata from scanning).

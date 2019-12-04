@@ -61,7 +61,9 @@ final class PostProcessorRegistrationDelegate {
 		Set<String> processedBeans = new HashSet<>();
 
 		/**
-		 * BeanDefinitionRegistryPostProcessor继承自BeanFactoryPostProcessor,所有这里先执行子接口的方法,再执行父接口方法
+		 * BeanDefinitionRegistryPostProcessor继承自BeanFactoryPostProcessor,
+		 * 所有这里先执行子接口的方法:postProcessBeanDefinitionRegistry()
+		 * 再执行父接口方法:postProcessBeanFactory()
 		 */
 
 		// 判断是否是 BeanDefinitionRegistry
@@ -227,6 +229,7 @@ final class PostProcessorRegistrationDelegate {
 		List<BeanPostProcessor> internalPostProcessors = new ArrayList<>();
 		List<String> orderedPostProcessorNames = new ArrayList<>();
 		List<String> nonOrderedPostProcessorNames = new ArrayList<>();
+
 		for (String ppName : postProcessorNames) {
 			if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
 				BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);
