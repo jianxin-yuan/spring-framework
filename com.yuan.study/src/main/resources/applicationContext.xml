@@ -69,7 +69,7 @@
 
 
 	<!--国际化,id必须为messageResource,否则会NoSuchMessageException-->
-	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" depends-on="">
 		<property name="basenames">
 			<list>
 				<value>message</value>
